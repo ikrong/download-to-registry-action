@@ -1,0 +1,36 @@
+name: 'Download And Push To Registry'
+description: 'Download And Push To Registry'
+branding:
+  icon: 'archive'
+  color: 'green'
+inputs:
+  registry:
+    description: 'Registry'
+    required: true
+    default: 'registry.cn-beijing.aliyuncs.com'
+  credential:
+    description: 'Registry Credential. For example: username:password'
+    required: true
+  repo:
+    description: 'Repo and tag'
+    required: true
+  file_list:
+    description: 'The files need to download. For example: url filename. Multiple file can be separate by ; or \n'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set GitHub Path
+      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
+    - name: Download And Push
+      run: download.sh
+      shell: bash
+      env:
+        REGISTRY: ${{ inputs.registry }}
+        CREDENTIAL: ${{ inputs.credential }}
+        REPO: ${{ inputs.repo }}
+        FILE_LIST: ${{ inputs.file_list }}

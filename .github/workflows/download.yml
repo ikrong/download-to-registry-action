@@ -1,0 +1,26 @@
+name: Download to registry
+on: 
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: 'Registry'
+        required: true
+        default: 'registry.cn-beijing.aliyuncs.com'
+      repo:
+        description: 'Repo and tag'
+        required: true
+      file_list:
+        description: 'The files need to download. For example: url filename. Multiple file can be separate by ; or \n'
+        required: true
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download to registry
+      uses: ikrong/download-to-registry-action@main
+      with:
+        registry: ${{ github.event.inputs.registry }}
+        credential: ${{ secrets.CREDENTIAL }}
+        repo: ${{ github.event.inputs.repo }}
+        file_list: ${{ github.event.inputs.file_list }}
