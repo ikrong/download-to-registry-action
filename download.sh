@@ -50,3 +50,5 @@ function build() {
 echo "" > Dockerfile
 
 make_dockerfile $FILE_LIST
+
+build
