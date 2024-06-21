@@ -51,4 +51,9 @@ echo "" > Dockerfile
 
 make_dockerfile $FILE_LIST
 
+
+echo "build content:"
+
+cat Dockerfile
+
 build
