@@ -3,14 +3,14 @@ on:
   workflow_dispatch:
     inputs:
       registry:
-        description: 'Registry'
+        description: 'Registry地址'
         required: true
         default: 'registry.cn-beijing.aliyuncs.com'
       repo:
-        description: 'Repo and tag'
+        description: '仓库及标签 (格式: scope/repo:tag)'
         required: true
       file_list:
-        description: 'The files need to download. For example: url filename. Multiple file can be separate by ; or \n'
+        description: '需要下载的文件 (格式：下载地址 文件名) 多个文件可以用分号或者\n隔开'
         required: true
 
 jobs:
