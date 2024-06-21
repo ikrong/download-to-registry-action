@@ -42,9 +42,9 @@ function login() {
 }
 
 function build() {
-    docker build -t "$REGISTRY$REPO" .
+    docker build -t "$REGISTRY/$REPO" .
     login $REGISTRY $CREDENTIAL
-    docker push "$REGISTRY$REPO"
+    docker push "$REGISTRY/$REPO"
 }
 
 echo "" > Dockerfile
