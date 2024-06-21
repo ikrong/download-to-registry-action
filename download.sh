@@ -1,16 +1,23 @@
+file_names=""
+
 function run_with_lines() {
-    echo -e "$1" | tr ';' '\n' | while read -r line; do
+    while read -r line; do
       $2 "$line"
-    done
+    done <<< $(echo -e "$1" | tr ';' '\n')
+}
+
+function get_file_url() {
+    arr=($1 )
+    echo "${arr[0]}"
 }
 
 function get_file_name() {
     arr=($1 )
     if [ "${arr[1]}" = "" ]; then
       filename=`basename $(echo "${arr[0]}" | cut -d'?' -f1)`
-      echo "${arr[0]} $filename"
+      echo "$filename"
     else
-      echo $1
+      echo "${arr[1]}"
     fi
 }
 
@@ -19,13 +26,24 @@ function append() {
 }
 
 function add() {
-    cmd=`get_file_name "$1"`
-    append "ADD $cmd"
+    url=$(get_file_url "$1")
+    name=$(get_file_name "$1")
+    # collect all file names
+    if [ "$file_names" = "" ]; then
+      file_names="$name"
+    else
+      file_names="$file_names;$name"
+    fi
+    append "ADD $url $name"
 }
 
 function make_dockerfile() {
     append "FROM scratch"
     run_with_lines "$1" add
+    # set file list label 
+    append "LABEL files=\"$file_names\""
+    # nessary to create container
+    append "CMD [ "/" ]"
 }
 
 function login() {
@@ -49,8 +67,7 @@ function build() {
 
 echo "" > Dockerfile
 
-make_dockerfile $FILE_LIST
-
+make_dockerfile "$FILE_LIST"
 
 echo "build content:"
 
