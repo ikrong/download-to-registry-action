@@ -65,6 +65,11 @@ function build() {
     docker push "$REGISTRY/$REPO"
 }
 
+function download_tip() {
+  echo "Use the following command to download the image to your destination:"
+  echo "curl -fsSL https://raw.githubusercontent.com/ikrong/download-to-registry-action/main/copy.sh > copy.sh && bash copy.sh $REGISTRY/$REPO"
+}
+
 echo "" > Dockerfile
 
 make_dockerfile "$FILE_LIST"
@@ -74,3 +79,5 @@ echo "build content:"
 cat Dockerfile
 
 build
+
+download_tip
