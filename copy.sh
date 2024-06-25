@@ -40,12 +40,11 @@ docker create --name "$container_name" $IMAGE
 
 FILE_LIST=$(docker inspect --format '{{ index .Config.Labels "files" }}' $IMAGE)
 
-if [ "$FILE_LIST" = "" ]; then
+if [ "$FILE_LIST" != "" ]; then
     # 获取镜像tag files
     while read -r line; do
-        echo "$line"
         docker cp "$container_name":/$line "$DESTINATION/$line"
-    done <<< $(echo "$FILE_LIST" | tr ',' '\n')
+    done <<< $(echo "${FILE_LIST}" | tr ';' '\n')
 fi
 
 docker rm -f "$container_name"
